@@ -8,7 +8,7 @@ images.forEach(img => {
 });
 
 images.forEach((img, index) => {
-    img.style.left = containerWidth + index * (img.width + 40) + 'px';
+    img.style.left = index * (img.width + 40) + 'px';
 });
 
 function animate() {
