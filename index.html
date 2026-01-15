@@ -237,3 +237,199 @@
 </html>
 
 
+
+
+
+
+
+
+
+
+
+<!-- ........................... -->
+<!-- ........................... -->
+<!-- ........................... -->
+
+
+<!-- Three-rows but within a box -->
+
+
+<!-- ........................... -->
+<!-- ........................... -->
+<!-- ........................... -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scroll Rows</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .three-rows-slider {
+            height: 400px;
+            width: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #2a2a2a;
+            position: relative;
+        }
+
+        .container {
+            overflow: hidden;
+            width: 100%;
+            height: 133px;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .container img {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100px;
+            height: 70px;
+            margin: 0 10px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="three-rows-slider">
+        <div class="container" id="row1">
+            <img src="https://dummyimage.com/300x200/ff6b6b/fff&text=Image+1" alt="Moving image 1">
+            <img src="https://dummyimage.com/300x200/4ecdc4/fff&text=Image+2" alt="Moving image 2">
+            <img src="https://dummyimage.com/300x200/45b7d1/fff&text=Image+3" alt="Moving image 3">
+            <img src="https://dummyimage.com/300x200/f9ca24/000&text=Image+4" alt="Moving image 4">
+            <img src="https://dummyimage.com/300x200/6c5ce7/fff&text=Image+5" alt="Moving image 5">
+            <img src="https://dummyimage.com/300x200/a29bfe/000&text=Image+6" alt="Moving image 6">
+        </div>
+
+        <div class="container" id="row2">
+            <img src="https://dummyimage.com/300x200/fd79a8/fff&text=Image+1" alt="Moving image 1">
+            <img src="https://dummyimage.com/300x200/fdcb6e/000&text=Image+2" alt="Moving image 2">
+            <img src="https://dummyimage.com/300x200/e17055/fff&text=Image+3" alt="Moving image 3">
+            <img src="https://dummyimage.com/300x200/00b894/fff&text=Image+4" alt="Moving image 4">
+            <img src="https://dummyimage.com/300x200/0984e3/fff&text=Image+5" alt="Moving image 5">
+            <img src="https://dummyimage.com/300x200/74b9ff/000&text=Image+6" alt="Moving image 6">
+        </div>
+
+        <div class="container" id="row3">
+            <img src="https://dummyimage.com/300x200/fab1a0/000&text=Image+1" alt="Moving image 1">
+            <img src="https://dummyimage.com/300x200/ff7675/fff&text=Image+2" alt="Moving image 2">
+            <img src="https://dummyimage.com/300x200/a29bfe/fff&text=Image+3" alt="Moving image 3">
+            <img src="https://dummyimage.com/300x200/fd79a8/fff&text=Image+4" alt="Moving image 4">
+            <img src="https://dummyimage.com/300x200/55efc4/000&text=Image+5" alt="Moving image 5">
+            <img src="https://dummyimage.com/300x200/81ecec/000&text=Image+6" alt="Moving image 6">
+        </div>
+    </div>
+
+    <script>
+        const speed = 2;
+        const imageWidth = 100 + 20; // width + margin (10px on each side)
+
+        // ROW 1 & 3 - Right to Left
+        const row1Images = document.querySelectorAll('#row1 img');
+        const row3Images = document.querySelectorAll('#row3 img');
+
+        const totalWidthRTL = row1Images.length * imageWidth;
+
+        // Initialize Row 1 positions
+        row1Images.forEach((img, index) => {
+            img.style.left = index * imageWidth + 'px';
+        });
+
+        // Initialize Row 3 positions
+        row3Images.forEach((img, index) => {
+            img.style.left = index * imageWidth + 'px';
+        });
+
+        // Animate Row 1 & 3 (Right to Left)
+        function animateRTL() {
+            // Row 1
+            row1Images.forEach((img) => {
+                let currentPos = parseFloat(img.style.left);
+                currentPos -= speed;
+                img.style.left = currentPos + 'px';
+
+                if (currentPos < -imageWidth) {
+                    img.style.left = (currentPos + totalWidthRTL) + 'px';
+                }
+            });
+
+            // Row 3
+            row3Images.forEach((img) => {
+                let currentPos = parseFloat(img.style.left);
+                currentPos -= speed;
+                img.style.left = currentPos + 'px';
+
+                if (currentPos < -imageWidth) {
+                    img.style.left = (currentPos + totalWidthRTL) + 'px';
+                }
+            });
+
+            requestAnimationFrame(animateRTL);
+        }
+
+        // ROW 2 - Left to Right
+        const topContainer = document.querySelector('.three-rows-slider');
+        const row2Images = document.querySelectorAll('#row2 img');
+        const totalWidthLTR = row2Images.length * imageWidth;
+        const containerWidth = topContainer.offsetWidth;
+
+        // Initialize Row 2 positions
+        row2Images.forEach((img, index) => {
+            img.style.left = (index * imageWidth) + 'px';
+        });
+
+        const secondRowSpeed = 1.3;
+        // Animate Row 2 (Left to Right)
+        function animateLTR() {
+            row2Images.forEach((img) => {
+                let currentPos = parseFloat(img.style.left);
+                currentPos += secondRowSpeed;
+                img.style.left = currentPos + 'px';
+
+                if (currentPos > containerWidth) {
+                    img.style.left = (currentPos - totalWidthLTR) + 'px';
+                }
+            });
+
+            requestAnimationFrame(animateLTR);
+        }
+
+        // Start animations
+        animateRTL();
+        animateLTR();
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
