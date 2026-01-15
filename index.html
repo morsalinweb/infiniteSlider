@@ -4,11 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
     <title>Document</title>
+
+    <style>
+        .container {
+            overflow: hidden;
+            width: 100%;
+            height: 300px;
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .container img {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            height: auto;
+            margin: 0 20px;
+        }
+    </style>
 </head>
 
 <body>
+
     <div class="container" id="imageContainer">
         <img src="https://dummyimage.com/300x200/000/fff&text=Image+1" alt="Moving image 1">
         <img src="https://dummyimage.com/300x200/000/fff&text=Image+2" alt="Moving image 2">
@@ -18,7 +36,38 @@
         <img src="https://dummyimage.com/300x200/000/fff&text=Image+6" alt="Moving image 6">
     </div>
 
-    <script src="script.js"></script>
+
+    <script>
+        const images = document.querySelectorAll('#imageContainer img');
+        const containerWidth = window.innerWidth;
+        const speed = 2;
+
+        let totalWidth = 0;
+        images.forEach(img => {
+            totalWidth += img.width + parseFloat(getComputedStyle(img).marginRight) * 2;
+        });
+
+        images.forEach((img, index) => {
+            img.style.left = index * (img.width + 40) + 'px';
+        });
+
+        function animate() {
+            images.forEach((img) => {
+                let currentPos = parseFloat(img.style.left);
+
+                currentPos -= speed;
+                img.style.left = currentPos + 'px';
+
+                if (currentPos < -img.width) {
+                    img.style.left = currentPos + totalWidth + 'px';
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
 </body>
 
 </html>
